@@ -5,6 +5,8 @@ FROM alpine
 COPY --from=build /opt/gource/ /opt/gource/
 
 RUN apk add --no-cache --virtual gource-runtime-dependencies \
+    git \
+    ffmpeg \
     sdl2 \
     sdl2_image \
     pcre \
