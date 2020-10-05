@@ -21,6 +21,9 @@ RUN git clone --recursive --branch ${GOURCE_REVISION} https://github.com/acaudwe
 WORKDIR /gource
 
 RUN ./autogen.sh 
-RUN ./configure --prefix=/opt/gource
+RUN ./configure \
+    --prefix=/opt/gource \
+    --with-tinyxml
 RUN make
 RUN make install
+
