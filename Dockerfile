@@ -1,29 +1,21 @@
+FROM 0x01be/gource:build as build
+
 FROM alpine
 
-RUN apk add --no-cache --virtual gource-build-dependencies \
-    git \
-    build-base \
-    autoconf \
-    automake \
-    sdl2-dev \
-    sdl2_image-dev \
-    pcre-dev \
-    freetype-dev \
-    glew-dev \
-    glm-dev \
-    boost-dev \
-    libpng-dev \
-    tinyxml-dev
+COPY --from=build /opt/gource/ /opt/gource/
 
-ENV GOURCE_REVISION master
-RUN git clone --recursive --branch ${GOURCE_REVISION} https://github.com/acaudwell/Gource.git /gource
+RUN apk add --no-cache --virtual gource-runtime-dependencies \
+    sdl2 \
+    sdl2_image \
+    pcre \
+    freetype \
+    glu \
+    glew \
+    glm \
+    libpng \
+    tinyxml \
+    boost-filesystem \
+    mesa-dri-swrast
 
-WORKDIR /gource
-
-RUN ./autogen.sh 
-RUN ./configure \
-    --prefix=/opt/gource \
-    --with-tinyxml
-RUN make
-RUN make install
+ENV PATH ${PATH}:/opt/gource/bin/
 
